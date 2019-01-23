@@ -1,4 +1,5 @@
 <?php
+namespace ScottWells\ObjectOriented;
 /**
  * PSR-4 Compliant Autoloader
  *
