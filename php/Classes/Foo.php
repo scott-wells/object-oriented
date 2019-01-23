@@ -71,8 +71,15 @@ class Author {
 	 * @throws \RangeException if $authorId is not positive
 	 * @throws \TypeError if $newTweetId is not a uuid or string
 	 **/
-	private function setAuthorId($authorId) {
-		$this->authorId = $authorId;
+	private function setAuthorId(string $authorId) : void {
+		try {
+			$uuid = self::validateUuid($authorId);
+		} catch(\InvalidArgumentException || \RangeException || \TypeError || \Exception $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+		// convert and store the author id
+		$this->authorId = $uuid;
 	}
 
 	/**
@@ -80,12 +87,26 @@ class Author {
 	 *
 	 * @return Uuid value of author id
 	 **/
-	private function getAuthorId() {
+	private function getAuthorId() : Uuid {
 		return $this->authorId;
 	}
 
+	/**
+	 * mutator method author avatar url
+	 *
+	 * @param string $authorAvatarURL
+	 * @throws \InvalidArgumentException if $authorAvatarUrl is not a string or insecure
+	 * @throws \TypeError if $newTweetId is not a string
+	 **/
+	private function setAuthorAvatarUrl(string $authorAvatarURL) : void {
+		// verify the url is secure
+		$authorAvatarURL = trim($authorAvatarURL);
+		$authorAvatarURL = filter_var($authorAvatarURL, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($authorAvatarURL) === true) {
+			throw(new \InvalidArgumentException("url is empty or insecure"));
+		}
 
-	private function setAuthorAvatarUrl($authorAvatarURL) {
+		// store the url
 		$this->authorAvatarUrl = $authorAvatarURL;
 	}
 
