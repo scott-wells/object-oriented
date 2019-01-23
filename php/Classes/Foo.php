@@ -81,7 +81,7 @@ class Author {
 	 * @throws \RangeException if $authorId is not positive
 	 * @throws \TypeError if $authorId is not a uuid or string
 	 **/
-	private function setAuthorId($authorId) : void {
+	public function setAuthorId($authorId) : void {
 		try {
 			$uuid = self::validateUuid($authorId);
 		} catch(\InvalidArgumentException | \RangeException | \TypeError | \Exception $exception) {
@@ -97,7 +97,7 @@ class Author {
 	 *
 	 * @return Uuid value of author id
 	 **/
-	private function getAuthorId() : Uuid {
+	public function getAuthorId() : Uuid {
 		return $this->authorId;
 	}
 
@@ -110,7 +110,7 @@ class Author {
 	 * @throws \InvalidArgumentException if $authorAvatarUrl is not a string or insecure
 	 * @throws \TypeError if $authorAvatarUrl is not a string
 	 **/
-	private function setAuthorAvatarUrl(string $authorAvatarURL) : void {
+	public function setAuthorAvatarUrl(string $authorAvatarURL) : void {
 		// verify the url is secure
 		$authorAvatarURL = trim($authorAvatarURL);
 		$authorAvatarURL = filter_var($authorAvatarURL, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -127,7 +127,7 @@ class Author {
 	 *
 	 * @return string value of author url
 	 **/
-	private function getAuthorAvatarUrl() {
+	public function getAuthorAvatarUrl() {
 		return $this->authorAvatarUrl;
 	}
 
@@ -140,7 +140,7 @@ class Author {
 	 * @throws \InvalidArgumentException if $authorActivationToken is not a string or insecure
 	 * @throws \TypeError if $authorActivationToken is not a string
 	 **/
-	private function setAuthorActivationToken(string  $authorActivationToken) : void {
+	public function setAuthorActivationToken(string  $authorActivationToken) : void {
 		//verify the token is secure
 		$authorActivationToken = trim($authorActivationToken);
 		$authorActivationToken = filter_var($authorActivationToken, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -157,7 +157,7 @@ class Author {
 	 *
 	 * @return string value of author activation token
 	 **/
-	private function getAuthorActivationToken() {
+	public function getAuthorActivationToken() {
 		return $this->authorActivationToken;
 	}
 
@@ -186,7 +186,7 @@ class Author {
 	 *
 	 * @return string value of author email
 	 **/
-	private function getAuthorEmail() {
+	public function getAuthorEmail() {
 		return $this->authorEmail;
 	}
 
@@ -198,7 +198,7 @@ class Author {
 	 * @throws \InvalidArgumentException if $authorHash is not a string or insecure
 	 * @throws \TypeError if $authorHash is not a string
 	 **/
-	private function setAuthorHash(string $authorHash) : void {
+	public function setAuthorHash(string $authorHash) : void {
 		//verify if secure
 		$authorHash = trim($authorHash);
 		$authorHash = filter_var($authorHash, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -214,7 +214,7 @@ class Author {
 	 *
 	 * @return string value of author hashed password
 	 **/
-	private function getAuthorHash() {
+	public function getAuthorHash() {
 		return $this->authorHash;
 	}
 
@@ -226,7 +226,7 @@ class Author {
 	 * @throws \InvalidArgumentException if $authorHash is not a string or insecure
 	 * @throws \TypeError if $authorHash is not a string
 	 **/
-	private function setAuthorUsername(string $authorUsername) : void {
+	public function setAuthorUsername(string $authorUsername) : void {
 		$authorUsername = trim($authorUsername);
 		$authorUsername = filter_var($authorUsername, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($authorUsername) === true) {
@@ -241,7 +241,7 @@ class Author {
 	 *
 	 * @return string value of author username
 	 **/
-	private function getAuthorUsername() {
+	public function getAuthorUsername() {
 		return $this->authorUsername;
 	}
 }
