@@ -47,16 +47,39 @@ class Author {
 	 * @throws \TypeError if data type violate type hints
 	 * @throws \Exception if some other exception occurs
 	 **/
-//	public function __construct($authorId, string $authorAvatarUrl, $authorActivationToken, string $authorEmail, $authorHash, string $authorUsername) {
-//		try {
-//			$this->setAuthorId($authorId);
-//		}
-//	}
+	public function __construct($authorId, string $authorAvatarUrl, $authorActivationToken, string $authorEmail, $authorHash, string $authorUsername) {
+		try {
+			$this->setAuthorId($authorId);
+			$this->setAuthorAvatarUrl($authorAvatarUrl);
+			$this->setAuthorActivationToken($authorActivationToken);
+			$this->setAuthorEmail($authorEmail);
+			$this->setAuthorHash($authorHash);
+			$this->setAuthorUsername($authorUsername);
+		}
+			//determine what exception type was thrown
+		catch(\InvalidArgumentException || \RangeException || \TypeError || \Exception $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+	}
 
+
+	/**
+	 * mutator method author id
+	 *
+	 * @param string|Uuid $authorId id of this Author
+	 * @throws \RangeException if $authorId is not positive
+	 * @throws \TypeError if $newTweetId is not a uuid or string
+	 **/
 	private function setAuthorId($authorId) {
 		$this->authorId = $authorId;
 	}
 
+	/**
+	 * accessor method for author id
+	 *
+	 * @return Uuid value of author id
+	 **/
 	private function getAuthorId() {
 		return $this->authorId;
 	}
@@ -66,6 +89,11 @@ class Author {
 		$this->authorAvatarUrl = $authorAvatarURL;
 	}
 
+	/**
+	 * accessor method for author url
+	 *
+	 * @return string value of author url
+	 **/
 	private function getAuthorAvatarUrl() {
 		return $this->authorAvatarUrl;
 	}
@@ -75,6 +103,11 @@ class Author {
 		$this->authorActivationToken = $authorActivationToken;
 	}
 
+	/**
+	 * accessor method for author id
+	 *
+	 * @return string value of author activation token
+	 **/
 	private function getAuthorActivationToken() {
 		return $this->authorActivationToken;
 	}
@@ -84,6 +117,11 @@ class Author {
 		$this->authorEmail = $authorEmail;
 	}
 
+	/**
+	 * accessor method for author id
+	 *
+	 * @return string value of author email
+	 **/
 	private function getAuthorEmail() {
 		return $this->authorEmail;
 	}
@@ -93,6 +131,11 @@ class Author {
 		$this->authorHash = $authorHash;
 	}
 
+	/**
+	 * accessor method for author id
+	 *
+	 * @return string value of author hashed password
+	 **/
 	private function getAuthorHash() {
 		return $this->authorHash;
 	}
@@ -102,6 +145,11 @@ class Author {
 		$this->authorUsername = $authorUsername;
 	}
 
+	/**
+	 * accessor method for author id
+	 *
+	 * @return string value of author username
+	 **/
 	private function getAuthorUsername() {
 		return $this->authorUsername;
 	}
