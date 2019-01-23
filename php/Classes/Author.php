@@ -1,7 +1,7 @@
 <?php
 namespace ScottWells\ObjectOriented;
 
-require_once("autoload.php");
+require_once("php/Classes/autoload.php");
 require_once(dirname(__DIR__, 2) . "php/Classes/autoload.php");
 
 use Ramsey\Uuid\Uuid;
