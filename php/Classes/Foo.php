@@ -35,6 +35,8 @@ class Author {
 	 **/
 	private $authorUsername;
 
+
+
 	/**
 	 * @param string|Uuid $authorId id of this Author
 	 * @param string $authorAvatarUrl url for the author's avatar photo
@@ -64,12 +66,13 @@ class Author {
 	}
 
 
+
 	/**
 	 * mutator method author id
 	 *
 	 * @param string|Uuid $authorId id of this Author
 	 * @throws \RangeException if $authorId is not positive
-	 * @throws \TypeError if $newTweetId is not a uuid or string
+	 * @throws \TypeError if $authorId is not a uuid or string
 	 **/
 	private function setAuthorId(string $authorId) : void {
 		try {
@@ -91,12 +94,14 @@ class Author {
 		return $this->authorId;
 	}
 
+
+
 	/**
 	 * mutator method author avatar url
 	 *
 	 * @param string $authorAvatarURL
 	 * @throws \InvalidArgumentException if $authorAvatarUrl is not a string or insecure
-	 * @throws \TypeError if $newTweetId is not a string
+	 * @throws \TypeError if $authorAvatarUrl is not a string
 	 **/
 	private function setAuthorAvatarUrl(string $authorAvatarURL) : void {
 		// verify the url is secure
@@ -120,7 +125,23 @@ class Author {
 	}
 
 
-	private function setAuthorActivationToken($authorActivationToken) {
+
+	/**
+	 * mutator method for activation token
+	 *
+	 * @param $authorActivationToken
+	 * @throws \InvalidArgumentException if $authorActivationToken is not a string or insecure
+	 * @throws \TypeError if $authorActivationToken is not a string
+	 **/
+	private function setAuthorActivationToken(string  $authorActivationToken) : void {
+		//verify the token is secure
+		$authorActivationToken = trim($authorActivationToken);
+		$authorActivationToken = filter_var($authorActivationToken, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($authorActivationToken) === true) {
+			throw(new \InvalidArgumentException("token is empty or insecure"));
+		}
+
+		//store the activation token
 		$this->authorActivationToken = $authorActivationToken;
 	}
 
@@ -134,6 +155,11 @@ class Author {
 	}
 
 
+	/**
+	 * mutator for author email
+	 *
+	 * @param $authorEmail
+	 **/
 	private function setAuthorEmail($authorEmail) {
 		$this->authorEmail = $authorEmail;
 	}
