@@ -59,7 +59,7 @@ class Author {
 			$this->setAuthorUsername($authorUsername);
 		}
 			//determine what exception type was thrown
-		catch(\InvalidArgumentException || \RangeException || \TypeError || \Exception $exception) {
+		catch(\InvalidArgumentException | \RangeException | \TypeError | \Exception $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
@@ -74,10 +74,10 @@ class Author {
 	 * @throws \RangeException if $authorId is not positive
 	 * @throws \TypeError if $authorId is not a uuid or string
 	 **/
-	private function setAuthorId(string $authorId) : void {
+	private function setAuthorId($authorId) : void {
 		try {
 			$uuid = self::validateUuid($authorId);
-		} catch(\InvalidArgumentException || \RangeException || \TypeError || \Exception $exception) {
+		} catch(\InvalidArgumentException | \RangeException | \TypeError | \Exception $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
