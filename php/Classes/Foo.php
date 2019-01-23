@@ -1,9 +1,15 @@
 <?php
+namespace ScottWells\ObjectOriented;
 
-include "php/Classes/ValidateDate.php";
+require_once("autoload.php");
+require_once(dirname(__DIR__, 2) . "php/Classes/autoload.php");
 
+use Ramsey\Uuid\Uuid;
 
 class Author {
+
+	use ValidateDate;
+	use ValidateUuid;
 
 	/**
 	 * id for this Author; this is the primary key
