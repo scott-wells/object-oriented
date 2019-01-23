@@ -146,7 +146,7 @@ class Author {
 	}
 
 	/**
-	 * accessor method for author id
+	 * accessor method for author activation token
 	 *
 	 * @return string value of author activation token
 	 **/
@@ -155,12 +155,22 @@ class Author {
 	}
 
 
+
 	/**
 	 * mutator for author email
 	 *
 	 * @param $authorEmail
+	 * @throws \InvalidArgumentException if $authorEmail is not a string or insecure
+	 * @throws \TypeError if $authorEmail is not a string
 	 **/
 	private function setAuthorEmail($authorEmail) {
+		//verify the email is secure
+		$authorEmail = trim($authorEmail);
+		$authorEmail = filter_var($authorEmail, FILTER_SANITIZE_EMAIL, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($authorEmail) === true) {
+			throw(new \InvalidArgumentException("email is empty or insecure"));
+		}
+		//store the author email
 		$this->authorEmail = $authorEmail;
 	}
 
@@ -174,7 +184,21 @@ class Author {
 	}
 
 
-	private function setAuthorHash($authorHash) {
+	/**
+	 * mutator for author hash
+	 *
+	 * @param $authorHash
+	 * @throws \InvalidArgumentException if $authorHash is not a string or insecure
+	 * @throws \TypeError if $authorHash is not a string
+	 **/
+	private function setAuthorHash(string $authorHash) : void {
+		//verify if secure
+		$authorHash = trim($authorHash);
+		$authorHash = filter_var($authorHash, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($authorHash) === true) {
+			throw(new InvalidArgumentException("author hash is empty or insecure"));
+		}
+		//store the author hash
 		$this->authorHash = $authorHash;
 	}
 
@@ -188,7 +212,20 @@ class Author {
 	}
 
 
-	private function setAuthorUsername($authorUsername) {
+	/**
+	 * mutator method for author username
+	 *
+	 * @param $authorUsername
+	 * @throws \InvalidArgumentException if $authorHash is not a string or insecure
+	 * @throws \TypeError if $authorHash is not a string
+	 **/
+	private function setAuthorUsername(string $authorUsername) : void {
+		$authorUsername = trim($authorUsername);
+		$authorUsername = filter_var($authorUsername, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($authorUsername) === true) {
+			throw(new InvalidArgumentException("username is empty or insecure"));
+		}
+		//store author username
 		$this->authorUsername = $authorUsername;
 	}
 
