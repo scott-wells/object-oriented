@@ -1,9 +1,17 @@
 <?php
 namespace ScottWells\ObjectOriented;
 
-require_once("../Classes/autoload.php");
-//require_once(dirname(__DIR__, 2) . "../php/Classes/autoload.php");
-require_once ("../Classes/Author.php");
+require_once("autoload.php");
+require_once(dirname(__DIR__, 2) . "/vendor/autoload.php");
 
-$someAuthor = new Author("d7e3bc4e437c437cb945b155a8ddf0c7", "https://www.author.picture.com", "nananananananananananananananana", "email05@email.com", "nanananananananananananananananananananananananananananananananananananananananananananananananaa", "Seymour Butts");
 
+$someAuthor = new Author(
+	"07d8eb07-6229-455c-b0c3-1f8b40b174a9",
+	"https://www.author.picture.com",
+	"nananananananananananananananana",
+	"email05@email.com",
+	"nanananananananananananananananananananananananananananananananananananananananananananananananaa",
+	"Seymour Butts"
+);
+
+echo "__toString($someAuthor)";

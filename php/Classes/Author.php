@@ -2,7 +2,7 @@
 namespace ScottWells\ObjectOriented;
 
 require_once("autoload.php");
-require_once(dirname(__DIR__, 2) . "/Classes/autoload.php");
+require_once(dirname(__DIR__, 2) . "/vendor/autoload.php");
 
 use Ramsey\Uuid\Uuid;
 
@@ -15,32 +15,32 @@ class Author {
 	 * id for this Author; this is the primary key
 	 * @var Uuid $authorId
 	 **/
-	public $authorId;
+	private $authorId;
 	/**
 	 * url for the author's avatar photo; this is a string
 	 * @var $authorAvatarUrl
 	 **/
-	public $authorAvatarUrl;
+	private $authorAvatarUrl;
 	/**
 	 * temporary password sent to author's email for validation; this is a string
 	 * @var $authorActivationToken
 	 **/
-	public $authorActivationToken;
+	private $authorActivationToken;
 	/**
 	 * author's email; this is a string with a special character
 	 * @var $authorEmail
 	 **/
-	public $authorEmail;
+	private $authorEmail;
 	/**
 	 * returns hashed characters for author's password; this is a string
 	 * @var $authorHash
 	 **/
-	public $authorHash;
+	private $authorHash;
 	/**
 	 * author's username; this is a string
 	 * @var $authorUsername
 	 **/
-	public $authorUsername;
+	private $authorUsername;
 
 
 
@@ -81,7 +81,7 @@ class Author {
 	 * @throws \RangeException if $authorId is not positive
 	 * @throws \TypeError if $authorId is not a uuid or string
 	 **/
-	public function setAuthorId($authorId) : void {
+	private function setAuthorId($authorId) : void {
 		try {
 			$uuid = self::validateUuid($authorId);
 		} catch(\InvalidArgumentException | \RangeException | \TypeError | \Exception $exception) {
@@ -97,7 +97,7 @@ class Author {
 	 *
 	 * @return Uuid value of author id
 	 **/
-	public function getAuthorId() : Uuid {
+	public function getAuthorId() {
 		return $this->authorId;
 	}
 
@@ -110,7 +110,7 @@ class Author {
 	 * @throws \InvalidArgumentException if $authorAvatarUrl is not a string or insecure
 	 * @throws \TypeError if $authorAvatarUrl is not a string
 	 **/
-	public function setAuthorAvatarUrl(string $authorAvatarURL) : void {
+	prviate function setAuthorAvatarUrl(string $authorAvatarURL) : void {
 		// verify the url is secure
 		$authorAvatarURL = trim($authorAvatarURL);
 		$authorAvatarURL = filter_var($authorAvatarURL, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -140,7 +140,7 @@ class Author {
 	 * @throws \InvalidArgumentException if $authorActivationToken is not a string or insecure
 	 * @throws \TypeError if $authorActivationToken is not a string
 	 **/
-	public function setAuthorActivationToken(string  $authorActivationToken) : void {
+	private function setAuthorActivationToken(string  $authorActivationToken) : void {
 		//verify the token is secure
 		$authorActivationToken = trim($authorActivationToken);
 		$authorActivationToken = filter_var($authorActivationToken, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -170,7 +170,7 @@ class Author {
 	 * @throws \InvalidArgumentException if $authorEmail is not a string or insecure
 	 * @throws \TypeError if $authorEmail is not a string
 	 **/
-	public function setAuthorEmail($authorEmail) {
+	private function setAuthorEmail($authorEmail) {
 		//verify the email is secure
 		$authorEmail = trim($authorEmail);
 		$authorEmail = filter_var($authorEmail, FILTER_SANITIZE_EMAIL, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -198,7 +198,7 @@ class Author {
 	 * @throws \InvalidArgumentException if $authorHash is not a string or insecure
 	 * @throws \TypeError if $authorHash is not a string
 	 **/
-	public function setAuthorHash(string $authorHash) : void {
+	private function setAuthorHash(string $authorHash) : void {
 		//verify if secure
 		$authorHash = trim($authorHash);
 		$authorHash = filter_var($authorHash, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -226,7 +226,7 @@ class Author {
 	 * @throws \InvalidArgumentException if $authorHash is not a string or insecure
 	 * @throws \TypeError if $authorHash is not a string
 	 **/
-	public function setAuthorUsername(string $authorUsername) : void {
+	private function setAuthorUsername(string $authorUsername) : void {
 		$authorUsername = trim($authorUsername);
 		$authorUsername = filter_var($authorUsername, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($authorUsername) === true) {
