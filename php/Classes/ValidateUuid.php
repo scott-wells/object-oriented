@@ -1,6 +1,6 @@
 <?php
 namespace ScottWells\ObjectOriented;
-require_once(dirname(__DIR__, 2) . "/php/Classes/autoload.php");
+require_once(dirname(__DIR__, 2) . "../php/Classes/autoload.php");
 use Ramsey\Uuid\Uuid;
 /**
  * Trait to validate a uuid

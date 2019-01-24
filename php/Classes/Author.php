@@ -1,8 +1,8 @@
 <?php
 namespace ScottWells\ObjectOriented;
 
-require_once("php/Classes/autoload.php");
-require_once(dirname(__DIR__, 2) . "php/Classes/autoload.php");
+require_once("autoload.php");
+require_once(dirname(__DIR__, 2) . "/Classes/autoload.php");
 
 use Ramsey\Uuid\Uuid;
 
@@ -15,32 +15,32 @@ class Author {
 	 * id for this Author; this is the primary key
 	 * @var Uuid $authorId
 	 **/
-	private $authorId;
+	public $authorId;
 	/**
 	 * url for the author's avatar photo; this is a string
 	 * @var $authorAvatarUrl
 	 **/
-	private $authorAvatarUrl;
+	public $authorAvatarUrl;
 	/**
 	 * temporary password sent to author's email for validation; this is a string
 	 * @var $authorActivationToken
 	 **/
-	private $authorActivationToken;
+	public $authorActivationToken;
 	/**
 	 * author's email; this is a string with a special character
 	 * @var $authorEmail
 	 **/
-	private $authorEmail;
+	public $authorEmail;
 	/**
 	 * returns hashed characters for author's password; this is a string
 	 * @var $authorHash
 	 **/
-	private $authorHash;
+	public $authorHash;
 	/**
 	 * author's username; this is a string
 	 * @var $authorUsername
 	 **/
-	private $authorUsername;
+	public $authorUsername;
 
 
 
@@ -170,7 +170,7 @@ class Author {
 	 * @throws \InvalidArgumentException if $authorEmail is not a string or insecure
 	 * @throws \TypeError if $authorEmail is not a string
 	 **/
-	private function setAuthorEmail($authorEmail) {
+	public function setAuthorEmail($authorEmail) {
 		//verify the email is secure
 		$authorEmail = trim($authorEmail);
 		$authorEmail = filter_var($authorEmail, FILTER_SANITIZE_EMAIL, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -203,7 +203,7 @@ class Author {
 		$authorHash = trim($authorHash);
 		$authorHash = filter_var($authorHash, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($authorHash) === true) {
-			throw(new InvalidArgumentException("author hash is empty or insecure"));
+			throw(new \InvalidArgumentException("author hash is empty or insecure"));
 		}
 		//store the author hash
 		$this->authorHash = $authorHash;
@@ -230,7 +230,7 @@ class Author {
 		$authorUsername = trim($authorUsername);
 		$authorUsername = filter_var($authorUsername, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($authorUsername) === true) {
-			throw(new InvalidArgumentException("username is empty or insecure"));
+			throw(new \InvalidArgumentException("username is empty or insecure"));
 		}
 		//store author username
 		$this->authorUsername = $authorUsername;
