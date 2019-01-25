@@ -114,7 +114,7 @@ class Author {
 	private function setAuthorAvatarUrl(string $authorAvatarURL) : void {
 		// verify the url is secure
 		$authorAvatarURL = trim($authorAvatarURL);
-		$authorAvatarURL = filter_var($authorAvatarURL, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		$authorAvatarURL = filter_var($authorAvatarURL, FILTER_VALIDATE_URL);
 		if(empty($authorAvatarURL) === true) {
 			throw(new \InvalidArgumentException("url is empty or insecure"));
 		}
@@ -174,7 +174,7 @@ class Author {
 	private function setAuthorEmail($authorEmail) {
 		//verify the email is secure
 		$authorEmail = trim($authorEmail);
-		$authorEmail = filter_var($authorEmail, FILTER_SANITIZE_EMAIL, FILTER_FLAG_NO_ENCODE_QUOTES);
+		$authorEmail = filter_var($authorEmail, FILTER_SANITIZE_EMAIL);
 		if(empty($authorEmail) === true) {
 			throw(new \InvalidArgumentException("email is empty or insecure"));
 		}
@@ -253,11 +253,11 @@ class Author {
 	 * @return string in HTML format
 	 **/
 	public function __toString() {
-		$html = "<p>Author Id: "           . $this->authorId
-				. "Author Avatar Url "       . $this->authorAvatarUrl
-				. "Author Activation Token " . $this->authorActivationToken
-				. "Author Email: "           . $this->authorEmail
-				. "Author Hash: "            . $this->authorHash
+		$html = "<p>Author Id: "           . $this->authorId              . "<br />"
+				. "Author Avatar Url "       . $this->authorAvatarUrl       . "<br />"
+				. "Author Activation Token " . $this->authorActivationToken . "<br />"
+				. "Author Email: "           . $this->authorEmail           . "<br />"
+				. "Author Hash: "            . $this->authorHash            . "<br />"
 				. "Author Username: "        . $this->authorUsername
 				. "</p>";
 		return($html);
