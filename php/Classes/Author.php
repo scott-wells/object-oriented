@@ -1,6 +1,5 @@
 <?php
 namespace ScottWells\OOP;
-//namespace Deepdivedylan\DataDesign;
 
 require_once("autoload.php");
 require_once("ValidateUuid.php");
@@ -12,7 +11,10 @@ class Author {
 	//use ValidateDate;
 	use ValidateUuid;
 
+
 	/**
+	 * These are the states for the class Author
+	 *
 	 * id for this Author; this is the primary key
 	 * @var Uuid $authorId
 	 **/
@@ -44,8 +46,9 @@ class Author {
 	private $authorUsername;
 
 
-
 	/**
+	 * This is a constructor method for the Author object
+	 *
 	 * @param string|Uuid $authorId id of this Author
 	 * @param string $authorActivationToken temporary password sent to author's email for validation
 	 * @param string $authorAvatarUrl url for the author's avatar photo
@@ -81,7 +84,6 @@ class Author {
 	}
 
 
-
 	/**
 	 * mutator method author id
 	 *
@@ -99,7 +101,6 @@ class Author {
 		// convert and store the author id
 		$this->authorId = $uuid;
 	}
-
 	/**
 	 * accessor method for author id
 	 *
@@ -108,7 +109,6 @@ class Author {
 	public function getAuthorId() {
 		return $this->authorId;
 	}
-
 
 
 	/**
@@ -129,7 +129,6 @@ class Author {
 		//store the activation token
 		$this->authorActivationToken = $authorActivationToken;
 	}
-
 	/**
 	 * accessor method for author activation token
 	 *
@@ -138,7 +137,6 @@ class Author {
 	public function getAuthorActivationToken() {
 		return $this->authorActivationToken;
 	}
-
 
 
 	/**
@@ -159,7 +157,6 @@ class Author {
 		// store the url
 		$this->authorAvatarUrl = $authorAvatarURL;
 	}
-
 	/**
 	 * accessor method for author url
 	 *
@@ -168,7 +165,6 @@ class Author {
 	public function getAuthorAvatarUrl() {
 		return $this->authorAvatarUrl;
 	}
-
 
 
 	/**
@@ -188,7 +184,6 @@ class Author {
 		//store the author email
 		$this->authorEmail = $authorEmail;
 	}
-
 	/**
 	 * accessor method for author email
 	 *
@@ -216,7 +211,6 @@ class Author {
 		//store the author hash
 		$this->authorHash = $authorHash;
 	}
-
 	/**
 	 * accessor method for author hashed password
 	 *
@@ -243,7 +237,6 @@ class Author {
 		//store author username
 		$this->authorUsername = $authorUsername;
 	}
-
 	/**
 	 * accessor method for author username
 	 *
@@ -269,5 +262,90 @@ class Author {
 				. "</p>";
 		return($html);
 	}
+
+
+	/**
+	 * Inserts Author into MySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when MySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function insert(\PDO $pdo) : void {
+
+		// create query template
+		$query = "INSERT INTO author(authorId, authorActivationToken, authorAvatarUrl, authorEmail, authorHash, authorUsername) 
+							VALUES (:authorId, :authorActivationToken, :authorAvatarUrl, :authorEmail, :authorHash, :authorUsername)";
+		$statement = $pdo->prepare($query);
+
+		//bind the member variables to place holders in template
+		$parameters = [
+			"authorId" => $this->authorId->getBytes(),
+			"authorActivationToken" => $this->authorActivationToken,
+			"authorAvatarUrl" => $this->authorAvatarUrl,
+			"authorEmail" => $this->authorEmail,
+			"authorHash" => $this->authorHash,
+			"authorUsername" => $this->authorUsername
+		];
+		$statement->execute($parameters);
+	}
+
+
+	/**
+	 * Deletes Author in MySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when MySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function delete(\PDO $pdo) : void {
+
+		// create query template
+		$query = "DELETE FROM author WHERE authorId = :authorId";
+		$statement = $pdo->prepare($query);
+
+		// bind the member variables to place holders in template
+		$parameters = ["authorId" => $this->authorId->getBytes()];
+		$statement->execute($parameters);
+	}
+
+
+	/**
+	 * Updates Author in MySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when MySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function update(\PDO $pdo) : void {
+
+		//create query template
+		$query = "UPDATE author SET authorId = :authorId, authorActivationToken = :authorActivationToken, 
+						authorAvatarUrl = :authorAvatarUrl, authorEmail = :authorEmail, authorHash = :authorHash,
+						authorUsername = :authorUsername";
+		$statement = $pdo->prepare($query);
+
+		//bind the member variables to place holders in template
+		$parameters = [
+			"authorId" => $this->authorId,
+			"authorActivationToken" => $this->authorActivationToken,
+			"authorAvatarUrl" => $this->authorAvatarUrl,
+			"authorEmail" => $this->authorEmail,
+			"authorHash" => $this->authorHash,
+			"authorUsername" => $this->authorUsername
+		];
+		$statement->execute($parameters);
+	}
+
+
+	/**
+	 * Gets Author by authorId
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param Uuid|string $authorId author id to search for
+	 * @return Author|null Author found or null if not found
+	 * @throws \PDOException when MySQL related errors occur
+	 **/
+
 }
 

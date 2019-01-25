@@ -1,8 +1,6 @@
 <?php
 namespace ScottWells\OOP;
-//namespace Deepdivedylan\DataDesign;
 require_once (dirname(__DIR__) . "/Classes/Author.php");
-//require_once ("../Classes/Author.php");
 
 
 $someAuthor = new Author(
