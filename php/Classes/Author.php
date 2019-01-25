@@ -18,15 +18,15 @@ class Author {
 	 **/
 	private $authorId;
 	/**
-	 * url for the author's avatar photo; this is a string
-	 * @var $authorAvatarUrl
-	 **/
-	private $authorAvatarUrl;
-	/**
 	 * temporary password sent to author's email for validation; this is a string
 	 * @var $authorActivationToken
 	 **/
 	private $authorActivationToken;
+	/**
+	 * url for the author's avatar photo; this is a string
+	 * @var $authorAvatarUrl
+	 **/
+	private $authorAvatarUrl;
 	/**
 	 * author's email; this is a string with a special character
 	 * @var $authorEmail
@@ -47,8 +47,8 @@ class Author {
 
 	/**
 	 * @param string|Uuid $authorId id of this Author
-	 * @param string $authorAvatarUrl url for the author's avatar photo
 	 * @param string $authorActivationToken temporary password sent to author's email for validation
+	 * @param string $authorAvatarUrl url for the author's avatar photo
 	 * @param string $authorEmail author's email
 	 * @param string $authorHash returns hashed characters for author's password
 	 * @param string $authorUsername author's username
@@ -57,19 +57,26 @@ class Author {
 	 * @throws \TypeError if data type violate type hints
 	 * @throws \Exception if some other exception occurs
 	 **/
-	public function __construct($authorId, string $authorAvatarUrl, $authorActivationToken, string $authorEmail, $authorHash, string $authorUsername) {
-		try {
-			$this->setAuthorId($authorId);
-			$this->setAuthorAvatarUrl($authorAvatarUrl);
-			$this->setAuthorActivationToken($authorActivationToken);
-			$this->setAuthorEmail($authorEmail);
-			$this->setAuthorHash($authorHash);
-			$this->setAuthorUsername($authorUsername);
-		}
-			//determine what exception type was thrown
-		catch(\InvalidArgumentException | \RangeException | \TypeError | \Exception $exception) {
-			$exceptionType = get_class($exception);
-			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+	public function __construct(
+		$authorId,
+		$authorActivationToken,
+		string $authorAvatarUrl,
+		string $authorEmail,
+		$authorHash,
+		string $authorUsername
+	) {
+			try {
+				$this->setAuthorId($authorId);
+				$this->setAuthorActivationToken($authorActivationToken);
+				$this->setAuthorAvatarUrl($authorAvatarUrl);
+				$this->setAuthorEmail($authorEmail);
+				$this->setAuthorHash($authorHash);
+				$this->setAuthorUsername($authorUsername);
+			}
+				//determine what exception type was thrown
+			catch(\InvalidArgumentException | \RangeException | \TypeError | \Exception $exception) {
+				$exceptionType = get_class($exception);
+				throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
 	}
 
@@ -82,7 +89,7 @@ class Author {
 	 * @throws \RangeException if $authorId is not positive
 	 * @throws \TypeError if $authorId is not a uuid or string
 	 **/
-	private function setAuthorId($authorId) : void {
+	public function setAuthorId($authorId) : void {
 		try {
 			$uuid = self::validateUuid($authorId);
 		} catch(\InvalidArgumentException | \RangeException | \TypeError | \Exception $exception) {
@@ -105,43 +112,13 @@ class Author {
 
 
 	/**
-	 * mutator method author avatar url
-	 *
-	 * @param string $authorAvatarURL
-	 * @throws \InvalidArgumentException if $authorAvatarUrl is not a string or insecure
-	 * @throws \TypeError if $authorAvatarUrl is not a string
-	 **/
-	private function setAuthorAvatarUrl(string $authorAvatarURL) : void {
-		// verify the url is secure
-		$authorAvatarURL = trim($authorAvatarURL);
-		$authorAvatarURL = filter_var($authorAvatarURL, FILTER_VALIDATE_URL);
-		if(empty($authorAvatarURL) === true) {
-			throw(new \InvalidArgumentException("url is empty or insecure"));
-		}
-
-		// store the url
-		$this->authorAvatarUrl = $authorAvatarURL;
-	}
-
-	/**
-	 * accessor method for author url
-	 *
-	 * @return string value of author url
-	 **/
-	public function getAuthorAvatarUrl() {
-		return $this->authorAvatarUrl;
-	}
-
-
-
-	/**
 	 * mutator method for activation token
 	 *
 	 * @param $authorActivationToken
 	 * @throws \InvalidArgumentException if $authorActivationToken is not a string or insecure
 	 * @throws \TypeError if $authorActivationToken is not a string
 	 **/
-	private function setAuthorActivationToken(string  $authorActivationToken) : void {
+	public function setAuthorActivationToken(string  $authorActivationToken) : void {
 		//verify the token is secure
 		$authorActivationToken = trim($authorActivationToken);
 		$authorActivationToken = filter_var($authorActivationToken, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -165,13 +142,43 @@ class Author {
 
 
 	/**
+	 * mutator method author avatar url
+	 *
+	 * @param string $authorAvatarURL
+	 * @throws \InvalidArgumentException if $authorAvatarUrl is not a string or insecure
+	 * @throws \TypeError if $authorAvatarUrl is not a string
+	 **/
+	public function setAuthorAvatarUrl(string $authorAvatarURL) : void {
+		// verify the url is secure
+		$authorAvatarURL = trim($authorAvatarURL);
+		$authorAvatarURL = filter_var($authorAvatarURL, FILTER_VALIDATE_URL);
+		if(empty($authorAvatarURL) === true) {
+			throw(new \InvalidArgumentException("url is empty or insecure"));
+		}
+
+		// store the url
+		$this->authorAvatarUrl = $authorAvatarURL;
+	}
+
+	/**
+	 * accessor method for author url
+	 *
+	 * @return string value of author url
+	 **/
+	public function getAuthorAvatarUrl() {
+		return $this->authorAvatarUrl;
+	}
+
+
+
+	/**
 	 * mutator for author email
 	 *
 	 * @param $authorEmail
 	 * @throws \InvalidArgumentException if $authorEmail is not a string or insecure
 	 * @throws \TypeError if $authorEmail is not a string
 	 **/
-	private function setAuthorEmail($authorEmail) {
+	public function setAuthorEmail($authorEmail) {
 		//verify the email is secure
 		$authorEmail = trim($authorEmail);
 		$authorEmail = filter_var($authorEmail, FILTER_SANITIZE_EMAIL);
@@ -183,7 +190,7 @@ class Author {
 	}
 
 	/**
-	 * accessor method for author id
+	 * accessor method for author email
 	 *
 	 * @return string value of author email
 	 **/
@@ -199,7 +206,7 @@ class Author {
 	 * @throws \InvalidArgumentException if $authorHash is not a string or insecure
 	 * @throws \TypeError if $authorHash is not a string
 	 **/
-	private function setAuthorHash(string $authorHash) : void {
+	public function setAuthorHash(string $authorHash) : void {
 		//verify if secure
 		$authorHash = trim($authorHash);
 		$authorHash = filter_var($authorHash, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -211,7 +218,7 @@ class Author {
 	}
 
 	/**
-	 * accessor method for author id
+	 * accessor method for author hashed password
 	 *
 	 * @return string value of author hashed password
 	 **/
@@ -227,7 +234,7 @@ class Author {
 	 * @throws \InvalidArgumentException if $authorHash is not a string or insecure
 	 * @throws \TypeError if $authorHash is not a string
 	 **/
-	private function setAuthorUsername(string $authorUsername) : void {
+	public function setAuthorUsername(string $authorUsername) : void {
 		$authorUsername = trim($authorUsername);
 		$authorUsername = filter_var($authorUsername, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($authorUsername) === true) {
@@ -238,7 +245,7 @@ class Author {
 	}
 
 	/**
-	 * accessor method for author id
+	 * accessor method for author username
 	 *
 	 * @return string value of author username
 	 **/
