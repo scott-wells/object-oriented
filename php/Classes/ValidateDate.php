@@ -1,5 +1,6 @@
 <?php
-namespace ScottWells\ObjectOriented;
+namespace ScottWells\OOP;
+//namespace Deepdivedylan\DataDesign;
 /**
  * Trait to Validate a mySQL Date
  *

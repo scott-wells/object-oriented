@@ -1,8 +1,7 @@
 <?php
-namespace ScottWells\ObjectOriented;
-
-require_once("autoload.php");
-require_once(dirname(__DIR__, 2) . "/vendor/autoload.php");
+namespace ScottWells\OOP;
+//namespace Deepdivedylan\DataDesign;
+require_once("../../vendor/autoload.php");
 use Ramsey\Uuid\Uuid;
 /**
  * Trait to validate a uuid

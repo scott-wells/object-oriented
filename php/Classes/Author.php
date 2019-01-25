@@ -1,14 +1,15 @@
 <?php
-namespace ScottWells\ObjectOriented;
+namespace ScottWells\OOP;
+//namespace Deepdivedylan\DataDesign;
 
 require_once("autoload.php");
-require_once(dirname(__DIR__, 2) . "/vendor/autoload.php");
+require_once("ValidateUuid.php");
+require_once("../../vendor/autoload.php");
 
 use Ramsey\Uuid\Uuid;
 
 class Author {
-
-	use ValidateDate;
+	//use ValidateDate;
 	use ValidateUuid;
 
 	/**
@@ -110,7 +111,7 @@ class Author {
 	 * @throws \InvalidArgumentException if $authorAvatarUrl is not a string or insecure
 	 * @throws \TypeError if $authorAvatarUrl is not a string
 	 **/
-	prviate function setAuthorAvatarUrl(string $authorAvatarURL) : void {
+	private function setAuthorAvatarUrl(string $authorAvatarURL) : void {
 		// verify the url is secure
 		$authorAvatarURL = trim($authorAvatarURL);
 		$authorAvatarURL = filter_var($authorAvatarURL, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -243,6 +244,23 @@ class Author {
 	 **/
 	public function getAuthorUsername() {
 		return $this->authorUsername;
+	}
+
+
+	/**
+	 * toString() magic method
+	 *
+	 * @return string in HTML format
+	 **/
+	public function __toString() {
+		$html = "<p>Author Id: "           . $this->authorId
+				. "Author Avatar Url "       . $this->authorAvatarUrl
+				. "Author Activation Token " . $this->authorActivationToken
+				. "Author Email: "           . $this->authorEmail
+				. "Author Hash: "            . $this->authorHash
+				. "Author Username: "        . $this->authorUsername
+				. "</p>";
+		return($html);
 	}
 }
 
