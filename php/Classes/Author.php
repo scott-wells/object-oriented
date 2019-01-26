@@ -345,7 +345,117 @@ class Author {
 	 * @param Uuid|string $authorId author id to search for
 	 * @return Author|null Author found or null if not found
 	 * @throws \PDOException when MySQL related errors occur
+	 * @throws \TypeError when a variable is not the correct data type
 	 **/
+	public function getAuthorId(\PDO $pdo, $authorId) : ?Tweet {
+		// sanitize the authorId before searching
+		try {
+			$authorId = self::validateUuid($authorId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
 
+		// create query template
+		$query = "SELECT authorId, authorActivationToken, authorAvatarUrl, authorEmail, authorHash, authorUsername
+						FROM author WHERE authorId = :authorId";
+		$statement = $pdo->prepare($query);
+
+		//bind the author id to the place holder in the template
+		$parameters = ["authorId" => $authorId->getBytes()];
+		$statement->execute($parameters);
+
+		// grab the author from MySQL
+		try {
+			$author = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$author = new Author(
+					$row["authorId"],
+					$row["authorActivationToken"],
+					$row["authorAvatarUrl"],
+					$row["authorEmail"],
+					$row["authorHash"],
+					$row["authorUsername"]);
+			}
+		} catch(\Exception $exception) {
+
+			// if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return($author);
+	}
+
+
+	/**
+	 * Get Author Username
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param string $authorUsername author username to search for
+	 * @returns authorUsername|null author username found or null if not found
+	 * @throws \PDOException when MySQL related errors occur
+	 * @throws \TypeError when variable is not the correct data type
+	 **/
+	public function getAuthorUsername(\PDO $pdo, $authorUsername) : string {
+
+		// sanitize the authorUsername before searching
+		$authorUsername = trim($authorUsername);
+		$authorUsername = filter_var($authorUsername, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($authorUsername) === true) {
+			throw(new \InvalidArgumentException("this username is empty or insecure"));
+		}
+
+		// create query template
+		$query = "SELECT authorUsername FROM author WHERE authorUsername = :authorUsername";
+		$statement = $pdo->prepare($query);
+
+		// bind author username to the place holder in template
+		$parameters = ["authorUsername" => $authorUsername];
+		$statement->execute($parameters);
+
+		// grab the authorUsername from MySQL
+		try {
+			$authorUsername = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$authorUsername = new Author($row["authorUsername"]);
+			}
+		} catch(\Exception $exception) {
+
+			// if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return($authorUsername);
+	}
+
+
+/**
+ * END OF THE CLASS
+ **/
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
