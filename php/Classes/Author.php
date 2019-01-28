@@ -347,7 +347,7 @@ class Author {
 	 * @throws \PDOException when MySQL related errors occur
 	 * @throws \TypeError when a variable is not the correct data type
 	 **/
-	public function getAuthorByAuthorId(\PDO $pdo, $authorId){
+	public static function getAuthorByAuthorId(\PDO $pdo, $authorId){
 		// sanitize the authorId before searching
 		try {
 			$authorId = self::validateUuid($authorId);
@@ -396,7 +396,7 @@ class Author {
 	 * @throws \PDOException when MySQL related errors occur
 	 * @throws \TypeError when variable is not the correct data type
 	 **/
-	public function getAuthorByAuthorEmail(\PDO $pdo, $authorEmail) : string {
+	public static function getAuthorByAuthorEmail(\PDO $pdo, $authorEmail) : string {
 
 		// sanitize the authorEmail before searching
 		$authorEmail = trim($authorEmail);
@@ -434,6 +434,44 @@ class Author {
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
 		return($authorEmail);
+	}
+
+
+	/**
+	 * Get all Authors
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @returns \SplFixedArray SplFixedArray of Authors found or null if not found
+	 * @throws \PDOException when MySQL related errors occur
+	 * @throws \TypeError when variable is not the correct data type
+	 **/
+	public static function getAllAuthors(\PDO $pdo) : \SplFixedArray {
+
+		// create query template
+		$query = "SELECT authorId, authorActivationToken, authorAvatarUrl, authorEmail, authorHash, authorUsername FROM author";
+		$statement = $pdo->prepare($query);
+		$statement->execute();
+
+		//build an array of Authors
+		$authors = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$author = new Author(
+					$row["authorId"],
+					$row["authorActivationToken"],
+					$row["authorAvatarUrl"],
+					$row["authorEmail"],
+					$row["authorHash"],
+					$row["authorUsername"]);
+				$authors[$authors->key()] = $author;
+				$authors->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return($authors);
 	}
 
 
