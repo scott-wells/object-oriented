@@ -347,7 +347,7 @@ class Author {
 	 * @throws \PDOException when MySQL related errors occur
 	 * @throws \TypeError when a variable is not the correct data type
 	 **/
-	public function getAuthorId(\PDO $pdo, $authorId) : ?Tweet {
+	public function getAuthorByAuthorId(\PDO $pdo, $authorId) : void {
 		// sanitize the authorId before searching
 		try {
 			$authorId = self::validateUuid($authorId);
@@ -388,7 +388,7 @@ class Author {
 
 
 	/**
-	 * Get Author Username
+	 * Get Author Username by Author Email
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param string $authorUsername author username to search for
@@ -396,7 +396,7 @@ class Author {
 	 * @throws \PDOException when MySQL related errors occur
 	 * @throws \TypeError when variable is not the correct data type
 	 **/
-	public function getAuthorUsername(\PDO $pdo, $authorUsername) : string {
+	public function getAuthorUsernameByAuthorEmail(\PDO $pdo, $authorUsername) : string {
 
 		// sanitize the authorUsername before searching
 		$authorUsername = trim($authorUsername);
@@ -406,7 +406,7 @@ class Author {
 		}
 
 		// create query template
-		$query = "SELECT authorUsername FROM author WHERE authorUsername = :authorUsername";
+		$query = "SELECT authorUsername FROM author WHERE authorEmail = :authorEmail";
 		$statement = $pdo->prepare($query);
 
 		// bind author username to the place holder in template
