@@ -347,7 +347,7 @@ class Author {
 	 * @throws \PDOException when MySQL related errors occur
 	 * @throws \TypeError when a variable is not the correct data type
 	 **/
-	public function getAuthorByAuthorId(\PDO $pdo, $authorId) : void {
+	public function getAuthorByAuthorId(\PDO $pdo, $authorId){
 		// sanitize the authorId before searching
 		try {
 			$authorId = self::validateUuid($authorId);
@@ -396,12 +396,12 @@ class Author {
 	 * @throws \PDOException when MySQL related errors occur
 	 * @throws \TypeError when variable is not the correct data type
 	 **/
-	public function getAuthorByAuthorEmail(\PDO $pdo, $authorUsername) : string {
+	public function getAuthorByAuthorEmail(\PDO $pdo, $authorEmail) : string {
 
-		// sanitize the authorUsername before searching
-		$authorUsername = trim($authorUsername);
-		$authorUsername = filter_var($authorUsername, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-		if(empty($authorUsername) === true) {
+		// sanitize the authorEmail before searching
+		$authorEmail = trim($authorEmail);
+		$authorEmail = filter_var($authorEmail, FILTER_SANITIZE_EMAIL);
+		if(empty($authorEmail) === true) {
 			throw(new \InvalidArgumentException("this username is empty or insecure"));
 		}
 
@@ -411,23 +411,29 @@ class Author {
 		$statement = $pdo->prepare($query);
 
 		// bind author username to the place holder in template
-		$parameters = ["authorUsername" => $authorUsername];
+		$parameters = ["authorEmail" => $authorEmail];
 		$statement->execute($parameters);
 
-		// grab the authorUsername from MySQL
+		// grab the authorEmail from MySQL
 		try {
-			$authorUsername = null;
+			$author = null;
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$authorUsername = new Author($row["authorUsername"]);
+				$author = new Author(
+					$row["authorId"],
+					$row["authorActivationToken"],
+					$row["authorAvatarUrl"],
+					$row["authorEmail"],
+					$row["authorHash"],
+					$row["authorUsername"]);
 			}
 		} catch(\Exception $exception) {
 
 			// if the row couldn't be converted, rethrow it
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
-		return($authorUsername);
+		return($authorEmail);
 	}
 
 
