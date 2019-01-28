@@ -388,7 +388,7 @@ class Author {
 
 
 	/**
-	 * Get Author Username by Author Email
+	 * Get Author by Author Email
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param string $authorUsername author username to search for
@@ -396,7 +396,7 @@ class Author {
 	 * @throws \PDOException when MySQL related errors occur
 	 * @throws \TypeError when variable is not the correct data type
 	 **/
-	public function getAuthorUsernameByAuthorEmail(\PDO $pdo, $authorUsername) : string {
+	public function getAuthorByAuthorEmail(\PDO $pdo, $authorUsername) : string {
 
 		// sanitize the authorUsername before searching
 		$authorUsername = trim($authorUsername);
@@ -406,7 +406,8 @@ class Author {
 		}
 
 		// create query template
-		$query = "SELECT authorUsername FROM author WHERE authorEmail = :authorEmail";
+		$query = "SELECT authorId, authorActivationToken, authorAvatarUrl, authorEmail, authorHash, authorUsername 
+						FROM author WHERE authorEmail = :authorEmail";
 		$statement = $pdo->prepare($query);
 
 		// bind author username to the place holder in template
